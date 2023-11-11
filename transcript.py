@@ -9,7 +9,9 @@ def extract_audio(video_path, output_audio_path):
 	.run()
     }
 
-def transcribe_audio(audio_path, transcript_path):
+def transcribe(video_path, audio_path, transcript_path):
+    extract_audio(video_path, audio_path)
+
     # Load the Whisper model
     model = whisper.load_model("base")
 
@@ -23,5 +25,5 @@ def transcribe_audio(audio_path, transcript_path):
     return result
 
 # extract_audio('static/NeuralNetVideo.mp4', 'static/NeuralNetAudio.wav')
-transcript = transcribe_audio('static/NeuralNetAudio.wav', 'static/transcript.txt')
-print(transcript)
+# transcript = transcribe_audio('static/NeuralNetVideo.mp4', static/NeuralNetAudio.wav', 'static/transcript.txt')
+# print(transcript)

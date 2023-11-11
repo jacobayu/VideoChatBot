@@ -11,6 +11,16 @@
 </head>
 <body>
     <h1>Welcome to our LIGN project! </h1>
+
+    <h2>Upload Video</h2>
+    <form id="uploadForm" action="http://localhost:5000/upload-video" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/*">
+        <input type="submit" value="Upload">
+    </form>
+
+    <video id="videoPlayer" controls style="display:none;"></video>
+    <div id="transcript" style="white-space: pre-wrap;"></div>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
