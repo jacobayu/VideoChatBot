@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const videoFile = document.querySelector('input[type="file"]').files[0];
         formData.append('video', videoFile);
 
-        print(formData);
-
         fetch('/upload-video', {
             method: 'POST',
             body: formData

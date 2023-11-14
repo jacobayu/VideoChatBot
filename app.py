@@ -33,7 +33,7 @@ def upload_video():
         # Process video file to generate transcript
         # things to check - file size limit
         print(file.filename)
-        transcript = transcribe(file.filename, 'static/VideoAudio.wav', 'static/VidTranscript.txt')
+        transcript = transcribe(file.filename, 'audio-files/VideoAudio.wav', 'audio-files/VidTranscript.txt')
         return jsonify(transcript=transcript)
 
 def allowed_file(filename):
