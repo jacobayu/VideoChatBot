@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 # request is the object to handle incoming requests
 from transcript import transcribe
 
@@ -14,6 +14,10 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/audio-files/<filename>')
+def data(filename):
+    return send_from_directory('audio-files', filename)
 
 
 @app.route('/upload-video', methods=['POST'])
