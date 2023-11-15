@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Welcome to our LIGN project! </h1>
+    <video id="videoPlayer" src="{{ url_for('static', filename='AmazonFilters.mp4') }}"controls style="display:none;" ></video>
+    <div id="transcript" style="white-space: pre-wrap;"></div>
 
     <h2>Upload Video</h2>
     <form id="uploadForm" action="http://localhost:5000/upload-video" method="POST" enctype="multipart/form-data">
@@ -19,10 +20,8 @@
         <input type="submit" value="Upload">
     </form>
 
-    <video id="videoPlayer" controls style="display:none;"></video>
-    <div id="transcript" style="white-space: pre-wrap;"></div>
-
     <!--<script src="../js/script.js"></script>-->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+    <script src="../static/js/videoAudioDisplay.js"></script>
 </body>
 </html>
