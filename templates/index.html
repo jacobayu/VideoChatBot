@@ -11,9 +11,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <video id="videoPlayer" src="{{ url_for('static', filename='AmazonFilters.mp4') }}"controls style="display:none;" ></video>
-    <div id="transcript" style="white-space: pre-wrap;"></div>
-
+    <div class="video-container">
+        <video id="videoPlayer" class="responsive-video" src="{{ url_for('static', filename='AmazonFilters.mp4') }}"controls style="display:none;" ></video>
+    </div>
+    
+    <div id="transcript-container" style="height: 100px; overflow-y: auto;">
+        <div id="transcript"></div>
+    </div>
+   
     <h2>Upload Video</h2>
     <form id="uploadForm" action="http://localhost:5000/upload-video" method="POST" enctype="multipart/form-data">
         <input type="file" name="video" accept="video/*">
