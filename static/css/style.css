@@ -3,6 +3,43 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.transcript-segment {
+    display: block; /* Each segment on a new line */
+    opacity: 0.5; /* De-emphasized by default */
+    transition: opacity 1s; /* Smooth transition for opacity changes */
+}
+
+.active-segment {
+    font-weight: bold;
+    opacity: 1.0; /* Fully visible for the active segment */
+}
+
+#transcript-container {
+    height: 100px; /* Adjust the height as needed */
+    overflow-y: auto;
+    position: relative; /* Needed for proper alignment */
+}
+
+.video-container {
+    justify-content: center !important; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 80%;
+    width: 80%;
+    overflow: hidden; 
+    border-color: red;
+    border-width: 5px;
+}
+
+.responsive-video {
+    max-width: 100%; /* Maximum width is the width of the viewport */
+    max-height: 100vh; /* Maximum height is the height of the viewport */
+    object-fit: contain; /* To ensure that all content is visible */
 }
