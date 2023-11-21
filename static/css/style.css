@@ -43,3 +43,15 @@ body {
     max-height: 100vh; /* Maximum height is the height of the viewport */
     object-fit: contain; /* To ensure that all content is visible */
 }
+
+#context-menu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background-color: #fff; /* or any color you prefer */
+    border: 1px solid #ccc; /* optional, adds a border around the menu */
+    box-shadow: 8px rgba(0, 0, 0, 0.15); /* X-offset, Y-offset, Blur-radius, Color */
+    border-radius: 5px; /* optional, rounds the corners of the menu */
+    text-align: left;
+    padding:5px;
+}
