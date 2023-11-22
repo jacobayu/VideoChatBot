@@ -10,7 +10,7 @@ client = OpenAI(api_key=api_key)
 
 def chat_with_bot(prompt_text):
     response = client.chat.completions.create(
-        model="gpt-4",  # Replace with your specific GPT-4 model identifier
+        model="gpt-3.5-turbo-1106",  # Replace with your specific GPT-4 model identifier
         messages=[
             {"role": "user", "content": prompt_text}
         ]

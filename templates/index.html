@@ -14,7 +14,22 @@
 <div id="context-menu">
     <div class="context-option" onclick="translateText()">Translate</div>
     <div class="context-option" onclick="summarizeText()">Summarize</div>
-    <div class="context-option" onclick="elaborateText()">Elaborate</div>
+    <div class="context-option" onclick="explainText()">Elaborate</div>
+</div>
+
+<div id="chatboxModal" class="chatbox-modal">
+    <!-- Chatbox content -->
+    <div class="chatbox-content">
+        <span class="close">&times;</span>
+        <h2>Chat with ChatGPT</h2>
+        <div id="chatbox" class="chatbox">
+            <!-- Messages will be displayed here -->
+        </div>
+        <div class="chatbox-row">
+            <input class="message-input" type="text" id="chatboxInput" placeholder="Message">
+            <button class="message-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 </div>
 
 <body>
