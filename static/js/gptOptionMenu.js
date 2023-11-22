@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const transcriptContainer = document.getElementById('transcript-container');
     const contextMenu = document.getElementById('context-menu');
+    let selectedText = ''
 
     // Function to show the context menu
     function showContextMenu(x, y) {
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Attach double-click event to the transcript container
     transcriptContainer.addEventListener('contextmenu', function(e) {
         e.preventDefault();
-        const selectedText = window.getSelection().toString().trim();
+        selectedText = window.getSelection().toString().trim();
         if (selectedText.length > 0) {
             // Get the position of the right-click
             console.log(selectedText)
@@ -28,4 +29,88 @@ document.addEventListener('DOMContentLoaded', (event) => {
             showContextMenu(x, y);
         }
     });
+
+    window.translateText = function() {
+        console.log('Translate:', selectedText);
+        // Implement translation logic here
+    };
+
+    window.summarizeText = function() {
+        console.log('Summarize:', selectedText);
+        const encodedText = encodeURIComponent(selectedText);
+
+        // Make an AJAX call to the Flask server to get the summary
+        fetch('/summarize/' + encodedText)
+        .then(response => response.text())
+        .then(summary => {
+            // Now, you would open a chatbox with the summary
+            console.log(summary)
+            openChatBox(summary);
+        })
+        .catch(error => {
+            console.error('Error during summary:', error);
+        });
+    };
+
+    window.explainText = function() {
+        console.log('Elaborate:', selectedText);
+        // Implement elaboration logic here
+    };
+
+    function openChatBox(initialMessage) {
+        // Display the initial message
+        const chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML = `<div>ChatGPT: ${initialMessage}</div>`;
+    
+        // Show the chatbox modal
+        const chatboxModal = document.getElementById('chatboxModal');
+        chatboxModal.style.display = 'flex';
+    
+        // Focus the input field for the user to type their response
+        document.getElementById('chatboxInput').focus();
+    
+        // Close button functionality
+        const closeButton = document.querySelector('.close');
+        closeButton.onclick = function() {
+            chatboxModal.style.display = 'none';
+        };
+    
+        // Close the modal when clicking anywhere outside of it
+        window.onclick = function(event) {
+            if (event.target === chatboxModal) {
+                chatboxModal.style.display = 'none';
+            }
+        };
+    }
+
+    window.sendMessage = function() {
+        const inputField = document.getElementById('chatboxInput');
+        const userInput = inputField.value.trim();
+        const chatbox = document.getElementById('chatbox');
+    
+        if (userInput) {
+            // Display the user's message in the chatbox
+            chatbox.innerHTML += `<div>You: ${userInput}</div>`;
+            // Clear the input field after sending the message
+            inputField.value = '';
+            console.log(userInput)
+            // Send the message to the server (you'd replace the URL with your actual endpoint)
+            fetch('/chat-with-bot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userInput }),
+            })
+            .then(response => {
+                console.log(response)
+                chatbox.innerHTML += `<div>ChatGPT: ${response}</div>`;
+                // Scroll to the bottom of the chatbox to show new message
+                chatbox.scrollTop = chatbox.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    }
 });

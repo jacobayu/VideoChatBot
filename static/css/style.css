@@ -31,8 +31,8 @@ body {
 .video-container {
     justify-content: center !important; /* Center horizontally */
     align-items: center; /* Center vertically */
-    height: 80%;
-    width: 80%;
+    height: 70%;
+    width: 70%;
     overflow: hidden; 
     border-color: red;
     border-width: 5px;
@@ -55,3 +55,99 @@ body {
     text-align: left;
     padding:5px;
 }
+
+ .context-option {
+    padding: 8px 12px; /* Adjust the padding as needed */
+    cursor: pointer;
+    border-bottom: 1px solid #ccc; /* This adds the line between options */
+}
+
+/* Remove the border from the last item to avoid a double line at the bottom */
+.context-option:last-child {
+    border-bottom: none;
+}
+
+/* Optional: Add a hover effect to menu items */
+.context-option:hover {
+    background-color: #f5f5f5;
+}
+/* Chatbox modal base styles */
+.chatbox-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 100px; /* Location of the box */
+  }
+  
+  /* Chatbox styles */
+  .chatbox-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Maximum width of the modal */
+    border-radius: 10px; /* Optional: for rounded corners */
+    top: 25%; /* Push down by half the viewport height */
+    transform: translateY(-25%);
+    text-align: left;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Chatbox messages window */
+  #chatbox {
+    background: #e5e5e5;
+    margin-bottom: 20px;
+    padding: 10px;
+    height: 300px; /* Fixed chatbox size */
+    overflow-y: auto; /* Add scroll to chatbox */
+    border-radius: 5px; /* Optional: for rounded corners */
+  }
+  
+  /* Input row */
+  .chatbox-row {
+    display: flex;
+    gap: 10px; /* Spacing between input and button */
+  }
+  
+  .message-input {
+    flex: 1; /* Input takes up the remainder of the row */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .message-button {
+    padding: 10px 20px;
+    background-color: #5cb85c; /* Bootstrap primary button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .message-button:hover {
+    background-color: #4cae4c; /* A shade darker for hover effect */
+  }
+  
