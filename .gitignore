@@ -2,3 +2,4 @@ audio-files
 venv/
 __pycache__
 .env
+video-files-server/*
