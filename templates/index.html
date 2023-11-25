@@ -34,7 +34,7 @@
 
 <body>
     <div class="video-container">
-        <video id="videoPlayer" class="responsive-video" src="{{ url_for('static', filename='NeuralNetVideo.mp4') }}"controls style="display:none;" ></video>
+        <video id="videoPlayer" class="responsive-video" controls style="display:none;" ></video>
     </div>
     
     <div id="transcript-container" style="height: 100px; overflow-y: auto;">
@@ -42,12 +42,12 @@
     </div>
    
     <h2>Upload Video</h2>
-    <form id="uploadForm" action="http://localhost:5000/upload-video" method="POST" enctype="multipart/form-data">
+    <form id="uploadForm" action="http://127.0.0.1:3000/upload-video" method="POST" enctype="multipart/form-data">
         <input type="file" name="video" accept="video/*">
         <input type="submit" value="Upload">
     </form>
 
-    <!--<script src="../js/script.js"></script>-->
+    <script src="../static/js/script.js"></script>
     <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
     <script src="../static/js/videoAudioDisplay.js"></script>
     <script src="../static/js/gptOptionMenu.js"></script>

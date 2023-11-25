@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const contextMenu = document.getElementById('context-menu');
     let selectedText = ''
 
+    // stores all of the message history
+    // can either store assistant (chatgpt) messages:
+    // {"role": "assistant", "content": [MESSAGE]}
+    // or user messages:
+    // {"role": "user", "content": [MESSAGE]}
+    let chatHistory = [];
+
     // Function to show the context menu
     function showContextMenu(x, y) {
         contextMenu.style.top = `${y}px`;
@@ -36,6 +43,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     window.summarizeText = function() {
+        // new conversation -- clear chat history
+        chatHistory = [];
+
         console.log('Summarize:', selectedText);
         const encodedText = encodeURIComponent(selectedText);
 
@@ -45,6 +55,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(summary => {
             // Now, you would open a chatbox with the summary
             console.log(summary)
+
+            // Add the summary to the chat history
+            chatHistory.push({
+                role: 'assistant',
+                content: "Can you summarize this for me? " + summary
+            });
+
             openChatBox(summary);
         })
         .catch(error => {
@@ -60,7 +77,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function openChatBox(initialMessage) {
         // Display the initial message
         const chatbox = document.getElementById('chatbox');
-        chatbox.innerHTML = `<div>ChatGPT: ${initialMessage}</div>`;
+        chatbox.innerHTML = `<div>ChatGPT: ${initialMessage.toString()}</div>`;
     
         // Show the chatbox modal
         const chatboxModal = document.getElementById('chatboxModal');
@@ -96,12 +113,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             console.log(userInput)
             // Send the message to the server (you'd replace the URL with your actual endpoint)
             fetch('/chat-with-bot', {
-                method: 'POST',
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userInput }),
+                body: JSON.stringify({ message: userInput, chatHistory: JSON.stringify(chatHistory) }),
             })
+            .then(response => response.text())
             .then(response => {
                 console.log(response)
                 chatbox.innerHTML += `<div>ChatGPT: ${response}</div>`;

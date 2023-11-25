@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
@@ -18,14 +19,34 @@ def set_bot_context(description, instructions):
     bot_context["description"] = description
     bot_context["instructions"] = instructions
 
-def chat_with_bot(prompt_text, chat_history):
-    full_prompt = f"{bot_context['description']} {bot_context['instructions']} {prompt_text}"
+def chat_with_bot(prompt_text, chat_history_text=None):
+    """
+    This function handles both initial and follow-up messages for a chatbot.
+
+    :param prompt_text: The new user message to send to the chatbot.
+    :param chat_history_text: The existing chat history in JSON format, if any.
+                              If None, it's an initial message.
+
+    :return: The chatbot's response.
+    """
+
+    # If there is no chat history, it's an initial message
+    if chat_history_text is None:
+        full_prompt = f"{bot_context['description']} {bot_context['instructions']} Can you summarize this for me? {prompt_text}"
+        messages = [{"role": "user", "content": full_prompt}]
+    else:
+        # Parse the chat history text into a list of dictionaries
+        print("chat_history_text!!!! ", chat_history_text)
+        chat_history = json.loads(chat_history_text)
+        messages = chat_history + [{"role": "user", "content": prompt_text}]
+
     response = client.chat.completions.create(
         model="gpt-3.5-turbo-1106",  # Replace with your specific GPT-4 model identifier
-        messages=chat_history + [{"role": "user", "content": full_prompt}]
+        messages=messages
     )
     message = response.choices[0].message.content
-    return message, chat_history + [{"role": "user", "content": prompt_text}, {"role": "assistant", "content": message}]
+
+    return message
 
 def main():
     print("Chatbot initialized. Type 'quit' to exit.")
@@ -36,14 +57,13 @@ def main():
         instructions="Be patient and provide detailed explanations when needed."
     )
 
-    chat_history = []
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() == "quit":
-            print("Chatbot exiting. Goodbye!")
-            break
-        bot_response, chat_history = chat_with_bot(user_input, chat_history)
-        print("Bot:", bot_response)
+    # while True:
+    #     user_input = input("You: ")
+    #     if user_input.lower() == "quit":
+    #         print("Chatbot exiting. Goodbye!")
+    #         break
+    #     bot_response, chat_history = chat_with_bot(user_input, chat_history)
+    #     print("Bot:", bot_response)
 
 if __name__ == "__main__":
     main()
