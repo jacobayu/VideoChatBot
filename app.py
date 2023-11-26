@@ -27,15 +27,15 @@ chatbot.main()
 
 @app.route('/explain/<selectedText>')
 def explain(selectedText):
-    return chat_with_bot('Please explain the following text: ' + selectedText)
+    return chat_with_bot('Please explain the following text: ' + selectedText, 'explain')
 
 @app.route('/translate/<selectedText>')
 def translate(selectedText):
-    pass
+    return chat_with_bot('Please translate the following text into Chinese: ' + selectedText, 'translate')
 
 @app.route('/summarize/<selectedText>')
 def summarize(selectedText):
-    return chat_with_bot('Please summarize the following text: ' + selectedText)
+    return chat_with_bot('Please summarize the following text: ' + selectedText, 'summarize')
 
 @app.route('/chat-with-bot', methods=['POST'])
 def message():

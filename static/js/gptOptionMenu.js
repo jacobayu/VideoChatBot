@@ -38,8 +38,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     window.translateText = function() {
+        // new conversation -- clear chat history
+        chatHistory = [];
+
         console.log('Translate:', selectedText);
-        // Implement translation logic here
+        const encodedText = encodeURIComponent(selectedText);
+
+        // Make an AJAX call to the Flask server to get the summary
+        fetch('/translate/' + encodedText)
+        .then(response => response.text())
+        .then(translation => {
+            // Now, you would open a chatbox with the summary
+            console.log(translation)
+
+            // Add the summary to the chat history
+            chatHistory.push({
+                role: 'assistant',
+                content: "Can you translate this to Chinese for me? " + translation
+            });
+
+            openChatBox(translation);
+        })
+        .catch(error => {
+            console.error('Error during translation:', error);
+        });
     };
 
     window.summarizeText = function() {
@@ -70,8 +92,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     window.explainText = function() {
+        // new conversation -- clear chat history
+        chatHistory = [];
+
         console.log('Elaborate:', selectedText);
-        // Implement elaboration logic here
+        const encodedText = encodeURIComponent(selectedText);
+
+        // Make an AJAX call to the Flask server to get the summary
+        fetch('/explain/' + encodedText)
+        .then(response => response.text())
+        .then(explanation => {
+            // Now, you would open a chatbox with the summary
+            console.log(explanation)
+
+            // Add the summary to the chat history
+            chatHistory.push({
+                role: 'assistant',
+                content: "Can you explain this to me? " + explanation
+            });
+
+            openChatBox(explanation);
+        })
+        .catch(error => {
+            console.error('Error during explanation:', error);
+        });
     };
 
     function openChatBox(initialMessage) {

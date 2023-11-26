@@ -19,7 +19,7 @@ def set_bot_context(description, instructions):
     bot_context["description"] = description
     bot_context["instructions"] = instructions
 
-def chat_with_bot(prompt_text, chat_history_text=None):
+def chat_with_bot(prompt_text, task_type, chat_history_text=None):
     """
     This function handles both initial and follow-up messages for a chatbot.
 
@@ -29,10 +29,20 @@ def chat_with_bot(prompt_text, chat_history_text=None):
 
     :return: The chatbot's response.
     """
+    # Determine the full prompt based on the task type
+    if task_type == 'translate':
+        # For translation, adjust the prompt accordingly
+        prompt_prefix = "Translate this to Chinese: "
+    elif task_type == 'summarize':
+        prompt_prefix = "Can you summarize this for me? "
+    else:
+        # Default to explanation
+        prompt_prefix = "Can you further elaborate on this? "
+
 
     # If there is no chat history, it's an initial message
     if chat_history_text is None:
-        full_prompt = f"{bot_context['description']} {bot_context['instructions']} Can you summarize this for me? {prompt_text}"
+        full_prompt = f"{bot_context['description']} {bot_context['instructions']} {prompt_prefix}{prompt_text}"
         messages = [{"role": "user", "content": full_prompt}]
     else:
         # Parse the chat history text into a list of dictionaries
