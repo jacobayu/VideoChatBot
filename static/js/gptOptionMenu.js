@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log('Translate:', selectedText);
         const encodedText = encodeURIComponent(selectedText);
 
+        // Add user's action to the chat history
+        chatHistory.push({
+            role: 'user',
+            content: `Translate this text: "${selectedText}"`
+        });
+
         // Make an AJAX call to the Flask server to get the summary
         fetch('/translate/' + encodedText)
         .then(response => response.text())
@@ -57,7 +63,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 content: "Can you translate this to Chinese for me? " + translation
             });
 
-            openChatBox(translation);
+            // openChatBox(translation);
+            openChatBox();
         })
         .catch(error => {
             console.error('Error during translation:', error);
@@ -118,6 +125,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     };
 
+    function openChatBox() {
+        const chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML = ''; // Clear previous content
+    
+        chatHistory.forEach(message => {
+            const messageRole = message.role === 'user' ? 'You' : 'ChatGPT';
+            chatbox.innerHTML += `<div>${messageRole}: ${message.content}</div>`;
+        });
+    
+        // Scroll to the bottom of the chatbox to show new messages
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    /*
     function openChatBox(initialMessage) {
         // Display the initial message
         const chatbox = document.getElementById('chatbox');
@@ -143,6 +164,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         };
     }
+    */
 
     window.sendMessage = function() {
         const inputField = document.getElementById('chatboxInput');
@@ -150,6 +172,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const chatbox = document.getElementById('chatbox');
     
         if (userInput) {
+            // Add user message to chat history
+            chatHistory.push({
+                role: 'user',
+                content: userInput
+            });
             // Display the user's message in the chatbox
             chatbox.innerHTML += `<div>You: ${userInput}</div>`;
             // Clear the input field after sending the message
@@ -165,10 +192,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
             })
             .then(response => response.text())
             .then(response => {
+                console.log(response);
+                chatHistory.push({
+                    role: 'assistant',
+                    content: response
+                });
+                openChatBox(); // Updated to show full chat history
+                /*
                 console.log(response)
                 chatbox.innerHTML += `<div>ChatGPT: ${response}</div>`;
                 // Scroll to the bottom of the chatbox to show new message
                 chatbox.scrollTop = chatbox.scrollHeight;
+                */
             })
             .catch(error => {
                 console.error('Error:', error);
