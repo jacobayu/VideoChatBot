@@ -15,21 +15,20 @@ body {
 /* container for video and chatbot */
 #main-container {
   display: flex;
-  height: 100vh; /* Adjust the height as needed */
+  flex-direction: row; /* Keeps items in a row */
+  align-items: stretch;
+  max-height: 70% !important;
+  border-color: black;
+  border-top: 1px;
+  border-bottom: 10px;
+  margin-bottom: 20px !important;
+  margin-top: 5px;
+  height: 75% !important;
 }
 
 .video-container {
-  /*
-  justify-content: center !important; /* Center horizontally */
-  /*align-items: center; /* Center vertically */
-  /*
-  height: 70%;
-  width: 70%;
-  overflow: hidden; 
-  */
-  flex-grow: 3; /* Video takes 3x the space of the chatbot */
+  width:100%;
   flex-basis: auto;
-  border: 2px solid red;
 }
 
 .responsive-video {
@@ -38,35 +37,29 @@ body {
   object-fit: contain; /* To ensure that all content is visible */
 }
 
+#videoPlayer {
+  width: 100%;
+  height: 100%; /* Adjust as needed */
+  object-fit: contain;
+}
+
 /* Chatbox container */
 .chatbox-modal {
-  flex-grow: 1;
+  /* flex:1; */
+  /* flex-grow: 1; */
   flex-basis: auto;
   height: 100%;
-  border: 2px solid red;
-
-  /*
-  position: fixed; /* Stay in place */
-  /*
-  overflow: auto; Enable scroll if needed 
-  z-index: 1; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%; 
-  background-color: rgb(0,0,0); 
-  padding-top: 100px; 
-  width: 300px; 
-  */
+  max-width: 30%;
+  text-align: left;
+  width:30%;
+  background-color: ;
 }
 
 .chatbox-content {
   max-height: 100%;
-  background-color: #fefefe;
-  border: 1px solid blue;
+  background-color: #e5e5e5;
   margin: auto;
   padding: 15px;
-  border-radius: 10px; /* Optional: for rounded corners */
   overflow-y: auto;
   object-fit: cover;
   box-sizing: border-box;
@@ -74,7 +67,7 @@ body {
 
 /* Chatbox messages grey window within chatbox-content */
 #chatbox {
-  background: #e5e5e5;
+  background: white;
   margin-bottom: 20px;
   padding: 10px;
   height: 70vh; 
@@ -83,16 +76,29 @@ body {
   word-wrap: break-word;
 }
 
+#video-transcript-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Same width as the video container */
+  max-width: 70%;
+}
+
 #transcript-container {
   height: 100px; /* Adjust the height as needed */
   overflow-y: auto;
   position: relative; /* Needed for proper alignment */
+  display: block;
+  text-align: center;
+  width: 90%; /* Ensures it takes the full width */
+  margin-top: 20px; /* Space above the transcript container */
 }
 
 .transcript-segment {
-  display: block; /* Each segment on a new line */
+  display: inline-block; /* Change to inline-block for horizontal centering */
   opacity: 0.5; /* De-emphasized by default */
   transition: opacity 1s; /* Smooth transition for opacity changes */
+  margin: 0 auto; /* Centering if it's a block element */
 }
 
 /* part of transcript that is currently said in the video */

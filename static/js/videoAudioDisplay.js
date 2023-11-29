@@ -58,5 +58,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 container.scrollTop = activeSegmentTop - containerHalfHeight + (activeSegment.offsetHeight / 2);
             }
         });
+
+        window.onload = function() {
+            var videoHeight = document.getElementById('videoPlayer').offsetHeight;
+            document.getElementById('chatboxModal').style.height = videoHeight + 'px';
+        };
     })    
 });

@@ -19,9 +19,15 @@
 
 <body>
     <div id="main-container">
-        <div class="video-container">
-            <video id="videoPlayer" class="responsive-video" controls style="display:none;" ></video>
+        <div id="video-transcript-container">
+            <div class="video-container">
+                <video id="videoPlayer" class="responsive-video" src="{{ url_for('static', filename='NeuralNetVideo.mp4') }}"controls style="display:none;" ></video>
+            </div>
+            <div id="transcript-container">
+                <div id="transcript"></div>
+            </div>
         </div>
+       
         <div id="chatboxModal" class="chatbox-modal">
             <div class="chatbox-content">
                 <h2>Chat with ChatGPT</h2>
@@ -35,19 +41,15 @@
             </div>
         </div>
     </div>
-    
-    <div id="transcript-container">
-        <div id="transcript"></div>
-    </div>
    
-    <h2>Upload Video</h2>
+    <!-- <h2>Upload Video</h2>
     <form id="uploadForm" action="http://127.0.0.1:3000/upload-video" method="POST" enctype="multipart/form-data">
         <input type="file" name="video" accept="video/*">
         <input type="submit" value="Upload">
-    </form>
+    </form> -->
 
     <!-- Scripts -->
-    <script src="../static/js/script.js"></script>
+    <!-- <script src="../static/js/script.js"></script> -->
     <script src="../static/js/videoAudioDisplay.js"></script>
     <script src="../static/js/gptOptionMenu.js"></script>
 </body>
