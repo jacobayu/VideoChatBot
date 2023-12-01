@@ -25,17 +25,41 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 #init chatbot
 chatbot.main()
 
-@app.route('/explain/<selectedText>')
-def explain(selectedText):
-    return chat_with_bot('Please explain the following text: ' + selectedText, 'explain')
+@app.route('/explain', methods=['POST'])
+def exlain_text():
+    data = request.get_json()
+    text_to_expl = data['textToExplain']
+    chat_history = data['chatHistory'] # is a list
 
-@app.route('/translate/<selectedText>')
-def translate(selectedText):
-    return chat_with_bot('Please translate the following text into Chinese: ' + selectedText, 'translate')
+    explained_text = chat_with_bot('Please summarize the following text: ' + text_to_expl, 
+                                    chat_history)
 
-@app.route('/summarize/<selectedText>')
-def summarize(selectedText):
-    return chat_with_bot('Please summarize the following text: ' + selectedText, 'summarize')
+    return jsonify({'explanation': explained_text})
+
+@app.route('/translate', methods=['POST'])
+def translate_text():
+    data = request.get_json()
+    text_to_translate = data['textToTranslate']
+    chat_history = data['chatHistory'] # is a list
+    print(chat_history)
+
+    translated_text = chat_with_bot('Please translate the following text into Chinese: ' + text_to_translate, 
+                                    chat_history)
+
+    return jsonify({'translation': translated_text})
+
+@app.route('/summarize', methods=['POST'])
+def summarize_text():
+    data = request.get_json()
+    text_to_summ = data['textToSummarize']
+    chat_history = data['chatHistory'] # is a list
+    print(chat_history)
+
+    summ_text = chat_with_bot('Please summarize the following text: ' + text_to_summ, 
+                                    chat_history)
+
+    return jsonify({'summary': summ_text})
+
 
 @app.route('/chat-with-bot', methods=['POST'])
 def message():

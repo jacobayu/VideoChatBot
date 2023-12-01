@@ -42,28 +42,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
         chatHistory = [];
 
         console.log('Translate:', selectedText);
-        const encodedText = encodeURIComponent(selectedText);
 
         // Add user's action to the chat history
         chatHistory.push({
             role: 'user',
-            content: `Translate this text: "${selectedText}"`
+            content: `Translate this text to Chinese: "${selectedText}"`
         });
 
-        // Make an AJAX call to the Flask server to get the summary
-        fetch('/translate/' + encodedText)
-        .then(response => response.text())
-        .then(translation => {
-            // Now, you would open a chatbox with the summary
+        // Prepare the data to be sent to the server
+        const requestData = {
+            textToTranslate: selectedText,
+            chatHistory: chatHistory
+        };
+
+        // Make an AJAX call to the Flask server to get the translation
+        fetch('/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Now, you would open a chatbox with the translation
+            const translation = data.translation; // Assuming the server returns a JSON object with the translation
             console.log(translation)
 
-            // Add the summary to the chat history
+            // Add the translation to the chat history
             chatHistory.push({
                 role: 'assistant',
-                content: "Can you translate this to Chinese for me? " + translation
+                content: translation
             });
 
-            // openChatBox(translation);
             openChatBox();
         })
         .catch(error => {
@@ -76,22 +87,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
         chatHistory = [];
 
         console.log('Summarize:', selectedText);
-        const encodedText = encodeURIComponent(selectedText);
+
+        // Add user's action to the chat history
+        chatHistory.push({
+            role: 'user',
+            content: `Summarize this text: "${selectedText}"`
+        });
+
+        // Prepare the data to be sent to the server
+        const requestData = {
+            textToSummarize: selectedText,
+            chatHistory: chatHistory
+        };
 
         // Make an AJAX call to the Flask server to get the summary
-        fetch('/summarize/' + encodedText)
-        .then(response => response.text())
-        .then(summary => {
+        fetch('/summarize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
             // Now, you would open a chatbox with the summary
-            console.log(summary)
+            const summ = data.summary; 
+            console.log(summ)
 
             // Add the summary to the chat history
             chatHistory.push({
                 role: 'assistant',
-                content: "Can you summarize this for me? " + summary
+                content: summ
             });
 
-            openChatBox(summary);
+            openChatBox();
         })
         .catch(error => {
             console.error('Error during summary:', error);
@@ -103,22 +132,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
         chatHistory = [];
 
         console.log('Elaborate:', selectedText);
-        const encodedText = encodeURIComponent(selectedText);
 
-        // Make an AJAX call to the Flask server to get the summary
-        fetch('/explain/' + encodedText)
-        .then(response => response.text())
-        .then(explanation => {
-            // Now, you would open a chatbox with the summary
-            console.log(explanation)
+        // Add user's action to the chat history
+        chatHistory.push({
+            role: 'user',
+            content: `Explain this text: "${selectedText}"`
+        });
 
-            // Add the summary to the chat history
+        // Prepare the data to be sent to the server
+        const requestData = {
+            textToExplain: selectedText,
+            chatHistory: chatHistory
+        };
+
+        // Make an AJAX call to the Flask server to get the explanation
+        fetch('/explain', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Now, you would open a chatbox with the explanation
+            const explain = data.explanation; 
+            console.log(explain)
+
+            // Add the explanation to the chat history
             chatHistory.push({
                 role: 'assistant',
-                content: "Can you explain this to me? " + explanation
+                content: explain
             });
 
-            openChatBox(explanation);
+            openChatBox();
         })
         .catch(error => {
             console.error('Error during explanation:', error);
@@ -173,10 +220,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
         if (userInput) {
             // Add user message to chat history
+            console.log('New message here')
+            console.log(userInput)
             chatHistory.push({
                 role: 'user',
                 content: userInput
             });
+            console.log(chatHistory)
             // Display the user's message in the chatbox
             chatbox.innerHTML += `<div>You: ${userInput}</div>`;
             // Clear the input field after sending the message
@@ -188,7 +238,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userInput, chatHistory: JSON.stringify(chatHistory) }),
+                body: JSON.stringify({ message: userInput, chatHistory: chatHistory }),
             })
             .then(response => response.text())
             .then(response => {
