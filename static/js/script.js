@@ -7,8 +7,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // create formData object:  create a set of key/value pairs representing 
         // form fields and their values, which includes the uploaded file
         const formData = new FormData();
-        const videoFile = document.querySelector('input[type="file"]').files[0];
+        let videoFile = document.querySelector('input[type="file"]').files[0];
+
+        // ffmpeg (server-side) doesn't work with file names with spaces
+        // so replace spaces with underscores
+        let fileName = videoFile.name.replace(/\s/g, '_');
+        videoFile = new File([videoFile], fileName, {type: videoFile.type});
+
         formData.append('video', videoFile);
+
+        // Display the video immediately from the local file
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.style.display = 'block';
+        videoPlayer.src = URL.createObjectURL(videoFile);
 
         fetch('/upload-video', {
             method: 'POST',
@@ -17,9 +28,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(response => response.json())
         .then(data => {
             // Display the video
-            const videoPlayer = document.getElementById('videoPlayer');
-            videoPlayer.style.display = 'block';
-            videoPlayer.src = URL.createObjectURL(videoFile);
+            // const videoPlayer = document.getElementById('videoPlayer');
+            // videoPlayer.style.display = 'block';
+            // videoPlayer.src = URL.createObjectURL(videoFile);
 
             // Display the transcript
             const transcriptDiv = document.getElementById('transcript');

@@ -1,10 +1,16 @@
 from flask import Flask, render_template, jsonify, request, send_from_directory
 # request is the object to handle incoming requests
-from transcript import transcribe
+# from transcript import transcribe
+# ^^ replaced by whisper:
+import whisper
+
 from chatbot import chat_with_bot
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+
+import chatbot
+
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
@@ -16,23 +22,51 @@ app = Flask(__name__)
 # configure maximum file size: 100 MB
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
-@app.route('/explain/<selectedText>')
-def explain(selectedText):
-    return chat_with_bot('Please explain the following text: ' + selectedText)
+#init chatbot
+chatbot.main()
 
-@app.route('/translate/<selectedText>')
-def translate(selectedText):
-    pass
+@app.route('/explain', methods=['POST'])
+def exlain_text():
+    data = request.get_json()
+    text_to_expl = data['textToExplain']
+    chat_history = data['chatHistory'] # is a list
 
-@app.route('/summarize/<selectedText>')
-def summarize(selectedText):
-    return chat_with_bot('Please summarize the following text: ' + selectedText)
+    explained_text = chat_with_bot('Please summarize the following text: ' + text_to_expl, 
+                                    chat_history)
+
+    return jsonify({'explanation': explained_text})
+
+@app.route('/translate', methods=['POST'])
+def translate_text():
+    data = request.get_json()
+    text_to_translate = data['textToTranslate']
+    chat_history = data['chatHistory'] # is a list
+    print(chat_history)
+
+    translated_text = chat_with_bot('Please translate the following text into Chinese: ' + text_to_translate, 
+                                    chat_history)
+
+    return jsonify({'translation': translated_text})
+
+@app.route('/summarize', methods=['POST'])
+def summarize_text():
+    data = request.get_json()
+    text_to_summ = data['textToSummarize']
+    chat_history = data['chatHistory'] # is a list
+    print(chat_history)
+
+    summ_text = chat_with_bot('Please summarize the following text: ' + text_to_summ, 
+                                    chat_history)
+
+    return jsonify({'summary': summ_text})
+
 
 @app.route('/chat-with-bot', methods=['POST'])
 def message():
     data = request.get_json()
     userInput = data['message']
-    response = chat_with_bot(userInput)
+    chatHistory = data['chatHistory']
+    response = chat_with_bot(userInput, chatHistory)
     print(response)
     return response
 
@@ -62,11 +96,32 @@ def upload_video():
 
     print("flag")
     if file and allowed_file(file.filename): # You might want to check file content type here as well.
+        print("flag2")
         # Process video file to generate transcript
         # things to check - file size limit
         print(file.filename)
-        transcript = transcribe(file.filename, 'audio-files/VideoAudio.wav', 'audio-files/VidTranscript.txt')
+        
+        # temporarily save the video file to the audio-files folder
+        file.save(os.path.join('audio-files', file.filename))
+
+        local_filename = os.path.join('audio-files', file.filename)
+
+        # convert video to audio
+        # POTENTIAL ERROR: WILL SHOW "NO SUCH FILE OR DIRECTORY"  
+        # IF THE FILENAME CONTAINS SPACES
+        # -y flag overwrites existing file
+        command = "ffmpeg -i audio-files/" + file.filename + " audio-files/VideoAudio.wav -y"
+        os.system(command)
+
+        local_audio_filename = os.path.join('audio-files', 'VideoAudio.wav')
+
+        model = whisper.load_model("base")
+        transcript = model.transcribe(local_audio_filename)
+        print("Transcribing done! Here's the transcript: ")
+        print(transcript["text"])
+
         return jsonify(transcript=transcript)
+    
 
 def allowed_file(filename):
     # Check if file extension is allowed
@@ -76,4 +131,4 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

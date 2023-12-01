@@ -2,3 +2,5 @@ audio-files
 venv/
 __pycache__
 .env
+video-files-server/*
+!video-files-server/readme.txt
