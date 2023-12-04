@@ -1,129 +1,140 @@
 * {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* container for everything on the page */
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.transcript-segment {
-    display: block; /* Each segment on a new line */
-    opacity: 0.5; /* De-emphasized by default */
-    transition: opacity 1s; /* Smooth transition for opacity changes */
-}
-
-.active-segment {
-    font-weight: bold;
-    opacity: 1.0; /* Fully visible for the active segment */
-}
-
-#transcript-container {
-    height: 100px; /* Adjust the height as needed */
-    overflow-y: auto;
-    position: relative; /* Needed for proper alignment */
+/* container for video and chatbot */
+#main-container {
+  display: flex;
+  flex-direction: row; /* Keeps items in a row */
+  align-items: stretch;
+  max-height: 70% !important;
+  border-color: black;
+  border-top: 1px;
+  border-bottom: 10px;
+  margin-bottom: 20px !important;
+  margin-top: 5px;
+  height: 75% !important;
 }
 
 .video-container {
-    justify-content: center !important; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 70%;
-    width: 70%;
-    overflow: hidden; 
-    border-color: red;
-    border-width: 5px;
+  width:100%;
+  flex-basis: auto;
 }
 
 .responsive-video {
-    max-width: 100%; /* Maximum width is the width of the viewport */
-    max-height: 100vh; /* Maximum height is the height of the viewport */
-    object-fit: contain; /* To ensure that all content is visible */
+  max-width: 100%; /* Maximum width is the width of the viewport */
+  max-height: 100vh; /* Maximum height is the height of the viewport */
+  object-fit: contain; /* To ensure that all content is visible */
 }
 
+#videoPlayer {
+  width: 100%;
+  height: 100%; /* Adjust as needed */
+  object-fit: contain;
+}
+
+/* Chatbox container */
+.chatbox-modal {
+  /* flex:1; */
+  /* flex-grow: 1; */
+  flex-basis: auto;
+  height: 100%;
+  max-width: 30%;
+  text-align: left;
+  width:30%;
+  background-color: white;
+}
+
+.chatbox-content {
+  max-height: 100%;
+  background-color: #e5e5e5;
+  margin: auto;
+  padding: 15px;
+  overflow-y: auto;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+/* Chatbox messages grey window within chatbox-content */
+#chatbox {
+  background: white;
+  margin-bottom: 20px;
+  padding: 10px;
+  height: 70vh; 
+  overflow-y: auto; /* Add scroll to chatbox */
+  border-radius: 5px; /* Optional: for rounded corners */
+  word-wrap: break-word;
+}
+
+#video-transcript-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Same width as the video container */
+  max-width: 70%;
+}
+
+#transcript-container {
+  height: 100px; /* Adjust the height as needed */
+  overflow-y: auto;
+  position: relative; /* Needed for proper alignment */
+  display: block;
+  text-align: center;
+  width: 90%; /* Ensures it takes the full width */
+  margin-top: 20px; /* Space above the transcript container */
+}
+
+.transcript-segment {
+  display: inline-block; /* Change to inline-block for horizontal centering */
+  opacity: 0.5; /* De-emphasized by default */
+  transition: opacity 1s; /* Smooth transition for opacity changes */
+  margin: 0 auto; /* Centering if it's a block element */
+}
+
+/* part of transcript that is currently said in the video */
+.active-segment {
+  font-weight: bold;
+  opacity: 1.0; /* Fully visible for the active segment */
+}
+
+/* menu for AI actions: translate, summarize, elaborate */
 #context-menu {
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    background-color: #fff; /* or any color you prefer */
-    border: 1px solid #ccc; /* optional, adds a border around the menu */
-    box-shadow: 8px rgba(0, 0, 0, 0.15); /* X-offset, Y-offset, Blur-radius, Color */
-    border-radius: 5px; /* optional, rounds the corners of the menu */
-    text-align: left;
-    padding:5px;
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: #fff; /* or any color you prefer */
+  border: 1px solid #ccc; /* optional, adds a border around the menu */
+  box-shadow: 8px rgba(0, 0, 0, 0.15); /* X-offset, Y-offset, Blur-radius, Color */
+  border-radius: 5px; 
+  text-align: left;
+  padding:5px;
 }
 
- .context-option {
-    padding: 8px 12px; /* Adjust the padding as needed */
-    cursor: pointer;
-    border-bottom: 1px solid #ccc; /* This adds the line between options */
+.context-option {
+  padding: 8px 12px; /* Adjust the padding as needed */
+  cursor: pointer;
+  border-bottom: 1px solid #ccc; /* This adds the line between options */
 }
 
 /* Remove the border from the last item to avoid a double line at the bottom */
 .context-option:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 /* Optional: Add a hover effect to menu items */
 .context-option:hover {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
-/* Chatbox modal base styles */
-.chatbox-modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 100px; /* Location of the box */
-  }
-  
-  /* Chatbox styles */
-  .chatbox-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 600px; /* Maximum width of the modal */
-    border-radius: 10px; /* Optional: for rounded corners */
-    top: 25%; /* Push down by half the viewport height */
-    transform: translateY(-25%);
-    text-align: left;
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* Chatbox messages window */
-  #chatbox {
-    background: #e5e5e5;
-    margin-bottom: 20px;
-    padding: 10px;
-    height: 300px; /* Fixed chatbox size */
-    overflow-y: auto; /* Add scroll to chatbox */
-    border-radius: 5px; /* Optional: for rounded corners */
-  }
   
   /* Input row */
   .chatbox-row {

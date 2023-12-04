@@ -8,4 +8,4 @@ If you need to add dependencies, update the requirements.txt file with the comma
 pip freeze > requirements.txt
 
 Run the project with the command: python app.py
-Then navigate to 'http://127.0.0.1:5000/' in the web browser.
+Then navigate to 'http://127.0.0.1:3000/' in the web browser.

@@ -7,48 +7,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your App</title>
-    <!--<link rel="stylesheet" href="../css/style.css">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <div id="context-menu">
     <div class="context-option" onclick="translateText()">Translate</div>
     <div class="context-option" onclick="summarizeText()">Summarize</div>
-    <div class="context-option" onclick="explainText()">Elaborate</div>
+    <div class="context-option" onclick="explainText()">Explain</div>
 </div>
 
-<div id="chatboxModal" class="chatbox-modal">
-    <!-- Chatbox content -->
-    <div class="chatbox-content">
-        <span class="close">&times;</span>
-        <h2>Chat with ChatGPT</h2>
-        <div id="chatbox" class="chatbox">
-            <!-- Messages will be displayed here -->
-        </div>
-        <div class="chatbox-row">
-            <input class="message-input" type="text" id="chatboxInput" placeholder="Message">
-            <button class="message-button" onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-</div>
 
 <body>
-    <div class="video-container">
-        <video id="videoPlayer" class="responsive-video" src="{{ url_for('static', filename='NeuralNetVideo.mp4') }}"controls style="display:none;" ></video>
-    </div>
-    
-    <div id="transcript-container" style="height: 100px; overflow-y: auto;">
-        <div id="transcript"></div>
+    <div id="main-container">
+        <div id="video-transcript-container">
+            <div class="video-container">
+                <video id="videoPlayer" class="responsive-video" src="{{ url_for('static', filename='stylerVideo.mp4') }}"controls style="display:none;" ></video>
+            </div>
+            <div id="transcript-container">
+                <div id="transcript"></div>
+            </div>
+        </div>
+       
+        <div id="chatboxModal" class="chatbox-modal">
+            <div class="chatbox-content">
+                <h2>Chat with ChatGPT</h2>
+                <div id="chatbox" class="chatbox">
+                    <!-- Messages will be displayed here -->
+                </div>
+                <div class="chatbox-row">
+                    <input class="message-input" type="text" id="chatboxInput" placeholder="Message">
+                    <button class="message-button" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
    
-    <h2>Upload Video</h2>
-    <form id="uploadForm" action="http://localhost:5000/upload-video" method="POST" enctype="multipart/form-data">
+    <!-- <h2>Upload Video</h2>
+    <form id="uploadForm" action="http://127.0.0.1:3000/upload-video" method="POST" enctype="multipart/form-data">
         <input type="file" name="video" accept="video/*">
         <input type="submit" value="Upload">
-    </form>
+    </form> -->
 
-    <!--<script src="../js/script.js"></script>-->
-    <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+    <!-- Scripts -->
+    <!-- <script src="../static/js/script.js"></script> -->
     <script src="../static/js/videoAudioDisplay.js"></script>
     <script src="../static/js/gptOptionMenu.js"></script>
 </body>

@@ -39,6 +39,7 @@ def transcribe_audio(audio_path, transcript_path):
     # Return the transcription text
     return result
 
-# extract_audio('Amazon Filters.mp4', 'audio-files/VideoAudio.wav')
+#extract_audio('static/stylerVideo.mp4', 'audio-files/VideoAudio.wav')
+transcribe_audio('audio-files/VideoAudio.wav', 'audio-files/VidTranscript.json')
 # transcript = transcribe_audio('audio-files/NeuralNetAudio.wav', 'audio-files/VidTranscript.txt')
 # print(transcript)
