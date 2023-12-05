@@ -59,9 +59,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        /*
         window.onload = function() {
             var videoHeight = document.getElementById('videoPlayer').offsetHeight;
             document.getElementById('chatboxModal').style.height = videoHeight + 'px';
         };
+        */
     })    
 });
