@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
             console.log(chatHistory)
             // Display the user's message in the chatbox
-            chatbox.innerHTML += `<div>You: ${userInput}</div>`;
+            chatbox.innerHTML += `<div style="background-color: #D9E8FF; border-radius: 5px; padding: 5px;">You: ${userInput}</div>`;
             // Clear the input field after sending the message
             inputField.value = '';
             console.log(userInput)
