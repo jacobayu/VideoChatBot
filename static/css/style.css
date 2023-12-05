@@ -76,6 +76,24 @@ body {
   word-wrap: break-word;
 }
 
+.text-user, .text-chatgpt {
+  margin-bottom: 20px;
+}
+
+.text-user {
+  text-align: left;
+  background-color: #D9E8FF; 
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.text-chatgpt {
+  text-align: left;
+  background-color: #DAE6DB;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 #video-transcript-container {
   display: flex;
   flex-direction: column;

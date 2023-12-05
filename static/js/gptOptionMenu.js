@@ -177,10 +177,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         chatbox.innerHTML = ''; // Clear previous content
     
         chatHistory.forEach(message => {
-            const messageRole = message.role === 'user' ? 'You' : 'ChatGPT';
-            chatbox.innerHTML += `<div>${messageRole}: ${message.content}</div>`;
+             /*chatbox.innerHTML += message.role === 'user' ? `<div class='text-user'>You: ${message.content}</div>`
+                                                : `<div class='text-chatgpt'>ChatGPT: ${message.content}</div>`;*/
+
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(message.role === 'user' ? 'text-user' : 'text-chatgpt');
+            messageDiv.textContent = message.role === 'user' ? `You: ${message.content}` : `ChatGPT: ${message.content}`;
+            chatbox.appendChild(messageDiv);
         });
-    
+
         // Scroll to the bottom of the chatbox to show new messages
         chatbox.scrollTop = chatbox.scrollHeight;
     }
