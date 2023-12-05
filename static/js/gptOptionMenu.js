@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const transcriptContainer = document.getElementById('transcript-container');
     const contextMenu = document.getElementById('context-menu');
+    const inputField = document.getElementById('chatboxInput');
     let selectedText = ''
 
     // stores all of the message history
@@ -177,13 +178,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
         chatbox.innerHTML = ''; // Clear previous content
     
         chatHistory.forEach(message => {
-             /*chatbox.innerHTML += message.role === 'user' ? `<div class='text-user'>You: ${message.content}</div>`
+            /*
+            chatbox.innerHTML += message.role === 'user' ? `<div class='text-user'>You: ${message.content}</div>`
                                                 : `<div class='text-chatgpt'>ChatGPT: ${message.content}</div>`;*/
 
+                                               
             const messageDiv = document.createElement('div');
             messageDiv.classList.add(message.role === 'user' ? 'text-user' : 'text-chatgpt');
             messageDiv.textContent = message.role === 'user' ? `You: ${message.content}` : `ChatGPT: ${message.content}`;
             chatbox.appendChild(messageDiv);
+        
         });
 
         // Scroll to the bottom of the chatbox to show new messages
@@ -217,6 +221,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         };
     }
     */
+
+    // Function to handle Enter key press in input field
+    inputField.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action to avoid line breaks in input field
+            sendMessage(); // Call your existing sendMessage function
+        }
+    });
 
     window.sendMessage = function() {
         const inputField = document.getElementById('chatboxInput');
