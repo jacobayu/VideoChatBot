@@ -36,12 +36,15 @@ def set_lang():
     return {'status': 'Language changed'}, 200
 
 @app.route('/explain', methods=['POST'])
-def exlain_text():
+def explain_text():
     data = request.get_json()
     text_to_expl = data['textToExplain']
+    text_context = data['contextText']
     chat_history = data['chatHistory'] # is a list
 
-    explained_text = chat_with_bot('Please concisely summarize the following text: ' + text_to_expl, 
+    explained_text = chat_with_bot('Please concisely summarize the following text: ' + text_to_expl +
+                                   'Here is the context in which this selected portion of the transcript appears: '
+                                   + text_context, 
                                     chat_history)
 
     return jsonify({'explanation': explained_text})
@@ -51,10 +54,11 @@ def translate_text():
     data = request.get_json()
     text_to_translate = data['textToTranslate']
     chat_history = data['chatHistory'] # is a list
+    text_context = data['contextText']
     user_language = session.get('language', 'zh-TW') # chinese as a default
     print(user_language)
     print(chat_history)
-    prompt = f"Please translate the following text into {user_language}: {text_to_translate}"
+    prompt = f"Please translate the following selected text into {user_language}: {text_to_translate} To help you with your translation, here is the context in which the selected text appears: {text_context}. Only return the translated selected portion"
 
     translated_text = chat_with_bot(prompt, chat_history)
 

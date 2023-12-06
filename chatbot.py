@@ -16,7 +16,7 @@ bot_context = {
 }
 
 bot_system_content = "You are a helpful assistant that is going to help students at Harvard University understand a video for a linguistics class. The title of the lecture is \"How to use bracket-based syntax tree builders for Introductory Linguistics Trees.\" You will be asked to explain, summarize, and translate selected portions of the transcript.  You may also be given context that the selected portion of the transcript appears in, but only use the additional context to better analyze the selected portion of the transcript."
-# bot_system_content = ""
+
 def set_bot_context(description, instructions):
     bot_context["description"] = description
     bot_context["instructions"] = instructions

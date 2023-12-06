@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const contextMenu = document.getElementById('context-menu');
     const inputField = document.getElementById('chatboxInput');
     let selectedText = ''
+    let contextText = ''
     let currentLanguage = 'zh-TW'; // default language
     const languageMap = {
         "en": "English",
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // or user messages:
     // {"role": "user", "content": [MESSAGE]}
     let chatHistory = [];
-    
+
     // Function to show the context menu
     function showContextMenu(x, y) {
         contextMenu.style.top = `${y}px`;
@@ -41,6 +42,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (selectedText.length > 0) {
             // Get the position of the right-click
             console.log(selectedText)
+            let selectedRange = window.getSelection().getRangeAt(0);
+            let startContainer = selectedRange.startContainer;
+            let endContainer = selectedRange.endContainer;
+
+            // Find the nearest ancestor or self span element
+            let startSpan = startContainer.nodeType === 3 ? startContainer.parentNode : startContainer;
+            let endSpan = endContainer.nodeType === 3 ? endContainer.parentNode : endContainer;
+
+            // Get the first previous and next siblings
+            let firstPrevSpan = startSpan.previousElementSibling;
+            let firstNextSpan = endSpan.nextElementSibling;
+
+            // Get the second previous and next siblings
+            let secondPrevSpan = firstPrevSpan ? firstPrevSpan.previousElementSibling : null;
+            let secondNextSpan = firstNextSpan ? firstNextSpan.nextElementSibling : null;
+
+            // Concatenate the text from these spans
+            // contextText = (secondPrevSpan ? secondPrevSpan.textContent : '') +
+            //                 (firstPrevSpan ? firstPrevSpan.textContent : '') +
+            //                 selectedText +
+            //                 (firstNextSpan ? firstNextSpan.textContent : '') +
+            //                 (secondNextSpan ? secondNextSpan.textContent : '');
+            contextText =  (firstPrevSpan ? firstPrevSpan.textContent : '') +
+                            selectedText +
+                            (firstNextSpan ? firstNextSpan.textContent : '') 
+
+            console.log(contextText)
             const x = e.clientX;
             const y = e.clientY;
             showContextMenu(x, y);
@@ -68,17 +96,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // new conversation -- clear chat history
         chatHistory = [];
 
-        console.log('Elaborate:', selectedText);
-
         // Add user's action to the chat history
         chatHistory.push({
             role: 'user',
-            content: `Explain this text: "${selectedText}"`
+            content: `Explain this text: "${selectedText}" Here is the context in which this selected portion of the transcript appears: '
+             ${contextText}`
         });
 
         // Prepare the data to be sent to the server
         const requestData = {
             textToExplain: selectedText,
+            contextText: contextText,
             chatHistory: chatHistory
         };
 
@@ -119,12 +147,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Add user's action to the chat history
         chatHistory.push({
             role: 'user',
-            content: `Translate this text to ${languageMap[currentLanguage]}: "${selectedText}"`
+            content: `Translate this text to ${languageMap[currentLanguage]}: "${selectedText}" To help you with your translation, here is the context in which text appears: ${contextText}`
         });
 
         // Prepare the data to be sent to the server
         const requestData = {
             textToTranslate: selectedText,
+            contextText: contextText,
             chatHistory: chatHistory
         };
 
