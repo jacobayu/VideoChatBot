@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then(response => response.json()) // Parse the JSON string in the response
     .then(data => {
         const transcriptDiv = document.getElementById('transcript');
-        console.log(data); // Here's your data in JavaScript object format
-        console.log(data['text'])
 
         const videoPlayer = document.getElementById('videoPlayer');
         const transcriptContainer = document.getElementById('transcript');
