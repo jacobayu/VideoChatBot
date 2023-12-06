@@ -15,6 +15,8 @@ bot_context = {
     "instructions": ""
 }
 
+bot_system_content = "You are a helpful assistant that is going to help students at Harvard University understand a video for a linguistics class. The title of the lecture is \"How to use bracket-based syntax tree builders for Introductory Linguistics Trees.\" You will be asked to explain, summarize, and translate selected portions of the transcript.  You may also be given context that the selected portion of the transcript appears in, but only use the additional context to better analyze the selected portion of the transcript."
+# bot_system_content = ""
 def set_bot_context(description, instructions):
     bot_context["description"] = description
     bot_context["instructions"] = instructions
@@ -32,14 +34,16 @@ def chat_with_bot(prompt_text, chat_history_text=None):
     # If there is no chat history, it's an initial message
     if chat_history_text is None:
         full_prompt = f"{bot_context['description']} {bot_context['instructions']} {prompt_text}"
-        messages = [{"role": "user", "content": full_prompt}]
+        messages = [{"role":"system", "content":bot_system_content},
+                    {"role": "user", "content": full_prompt}]
     else:
         # Parse the chat history text into a list of dictionaries
         print("chat_history_text!!!! ", chat_history_text)
         full_prompt = f"{bot_context['description']} {bot_context['instructions']}{prompt_text}"
         print(full_prompt)
 
-        messages = chat_history_text + [{"role": "user", "content": full_prompt}]
+        messages = chat_history_text + [{"role":"system", "content":bot_system_content},
+                                        {"role": "user", "content": full_prompt}]
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo-1106",  # Replace with your specific GPT-4 model identifier

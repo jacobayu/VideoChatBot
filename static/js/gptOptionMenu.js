@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // or user messages:
     // {"role": "user", "content": [MESSAGE]}
     let chatHistory = [];
-
+    
     // Function to show the context menu
     function showContextMenu(x, y) {
         contextMenu.style.top = `${y}px`;
@@ -63,6 +63,52 @@ document.addEventListener('DOMContentLoaded', (event) => {
           body: JSON.stringify({ language: selectedLanguage }),
         });
     });
+
+    window.explainText = function() {
+        // new conversation -- clear chat history
+        chatHistory = [];
+
+        console.log('Elaborate:', selectedText);
+
+        // Add user's action to the chat history
+        chatHistory.push({
+            role: 'user',
+            content: `Explain this text: "${selectedText}"`
+        });
+
+        // Prepare the data to be sent to the server
+        const requestData = {
+            textToExplain: selectedText,
+            chatHistory: chatHistory
+        };
+
+        // Make an AJAX call to the Flask server to get the explanation
+        fetch('/explain', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Now, you would open a chatbox with the explanation
+            const explain = data.explanation; 
+            console.log(explain)
+
+            // Add the explanation to the chat history
+            chatHistory.push({
+                role: 'assistant',
+                content: explain
+            });
+
+            openChatBox();
+        })
+        .catch(error => {
+            console.error('Error during explanation:', error);
+        });
+    };
+
 
     window.translateText = function() {
         // new conversation -- clear chat history
@@ -154,51 +200,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     };
 
-    window.explainText = function() {
-        // new conversation -- clear chat history
-        chatHistory = [];
-
-        console.log('Elaborate:', selectedText);
-
-        // Add user's action to the chat history
-        chatHistory.push({
-            role: 'user',
-            content: `Explain this text: "${selectedText}"`
-        });
-
-        // Prepare the data to be sent to the server
-        const requestData = {
-            textToExplain: selectedText,
-            chatHistory: chatHistory
-        };
-
-        // Make an AJAX call to the Flask server to get the explanation
-        fetch('/explain', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Now, you would open a chatbox with the explanation
-            const explain = data.explanation; 
-            console.log(explain)
-
-            // Add the explanation to the chat history
-            chatHistory.push({
-                role: 'assistant',
-                content: explain
-            });
-
-            openChatBox();
-        })
-        .catch(error => {
-            console.error('Error during explanation:', error);
-        });
-    };
-
+    
     function openChatBox() {
         const chatbox = document.getElementById('chatbox');
         chatbox.innerHTML = ''; // Clear previous content

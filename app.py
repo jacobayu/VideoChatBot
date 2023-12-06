@@ -41,7 +41,7 @@ def exlain_text():
     text_to_expl = data['textToExplain']
     chat_history = data['chatHistory'] # is a list
 
-    explained_text = chat_with_bot('Please summarize the following text: ' + text_to_expl, 
+    explained_text = chat_with_bot('Please concisely summarize the following text: ' + text_to_expl, 
                                     chat_history)
 
     return jsonify({'explanation': explained_text})
@@ -67,7 +67,7 @@ def summarize_text():
     chat_history = data['chatHistory'] # is a list
     print(chat_history)
 
-    summ_text = chat_with_bot('Please summarize the following text: ' + text_to_summ, 
+    summ_text = chat_with_bot('Please concisely summarize the following text: ' + text_to_summ, 
                                     chat_history)
 
     return jsonify({'summary': summ_text})
