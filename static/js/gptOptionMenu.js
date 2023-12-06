@@ -1,8 +1,17 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+
     const transcriptContainer = document.getElementById('transcript-container');
     const contextMenu = document.getElementById('context-menu');
     const inputField = document.getElementById('chatboxInput');
     let selectedText = ''
+    let currentLanguage = 'zh-TW'; // default language
+    const languageMap = {
+        "en": "English",
+        "es": "Español",
+        "de": "German",
+        "zh-TW": "中文 (Chinese)",
+        "hi": "हिन्दी (Hindi)",
+    };
 
     // stores all of the message history
     // can either store assistant (chatgpt) messages:
@@ -38,6 +47,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
+    
+    // set language depending on option selected in the menu
+    document.getElementById('languageSelect').addEventListener('change', function() {
+        var selectedLanguage = this.value;
+        currentLanguage = this.value;
+        console.log(currentLanguage);
+
+        // Send this information to the backend
+        fetch('/set_language', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ language: selectedLanguage }),
+        });
+    });
+
     window.translateText = function() {
         // new conversation -- clear chat history
         chatHistory = [];
@@ -47,7 +73,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Add user's action to the chat history
         chatHistory.push({
             role: 'user',
-            content: `Translate this text to Chinese: "${selectedText}"`
+            content: `Translate this text to ${languageMap[currentLanguage]}: "${selectedText}"`
         });
 
         // Prepare the data to be sent to the server
@@ -192,35 +218,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Scroll to the bottom of the chatbox to show new messages
         chatbox.scrollTop = chatbox.scrollHeight;
-    }
-
-    /*
-    function openChatBox(initialMessage) {
-        // Display the initial message
-        const chatbox = document.getElementById('chatbox');
-        chatbox.innerHTML = `<div>ChatGPT: ${initialMessage.toString()}</div>`;
-    
-        // Show the chatbox modal
-        const chatboxModal = document.getElementById('chatboxModal');
-        chatboxModal.style.display = 'flex';
-    
-        // Focus the input field for the user to type their response
-        document.getElementById('chatboxInput').focus();
-    
-        // Close button functionality
-        const closeButton = document.querySelector('.close');
-        closeButton.onclick = function() {
-            chatboxModal.style.display = 'none';
-        };
-    
-        // Close the modal when clicking anywhere outside of it
-        window.onclick = function(event) {
-            if (event.target === chatboxModal) {
-                chatboxModal.style.display = 'none';
-            }
-        };
-    }
-    */
+    };
 
     // Function to handle Enter key press in input field
     inputField.addEventListener('keyup', function(event) {
@@ -276,5 +274,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.error('Error:', error);
             });
         }
-    }
+    };
 });

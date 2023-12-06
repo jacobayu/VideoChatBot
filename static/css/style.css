@@ -179,4 +179,17 @@ body {
   .message-button:hover {
     background-color: #4cae4c; /* A shade darker for hover effect */
   }
-  
+
+#languageSelect {
+  position: fixed; /* Stay in place */
+  bottom: 0;      /* Position at the bottom */
+  left: 0;        /* Position to the left */
+  width: 100px;   /* Set a width if necessary */
+  height: 40px;   /* Set a height if necessary */
+  padding: 5px;   /* Optional: add some padding */
+  font-size: 16px; /* Optional: adjust font size */
+  border: 1px solid #ccc; /* Optional: add a border */
+  border-radius: 5px; /* Optional: round corners */
+  background-color: white; /* Optional: set background color */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+}

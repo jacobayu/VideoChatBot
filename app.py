@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_from_directory
+from flask import Flask, render_template, jsonify, request, send_from_directory, session
 # request is the object to handle incoming requests
 # from transcript import transcribe
 # ^^ replaced by whisper:
@@ -19,11 +19,21 @@ client = OpenAI(api_key=api_key)
 
 app = Flask(__name__)
 
+app.secret_key = 'FLASK_KEY'
+
 # configure maximum file size: 100 MB
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 #init chatbot
 chatbot.main()
+
+@app.route('/set_language', methods=['POST'])
+def set_lang():
+    data = request.get_json()
+    selected_language = data['language']
+    session['language'] = selected_language  # Store language in session
+    print(session['language'])
+    return {'status': 'Language changed'}, 200
 
 @app.route('/explain', methods=['POST'])
 def exlain_text():
@@ -41,10 +51,12 @@ def translate_text():
     data = request.get_json()
     text_to_translate = data['textToTranslate']
     chat_history = data['chatHistory'] # is a list
+    user_language = session.get('language', 'zh-TW') # chinese as a default
+    print(user_language)
     print(chat_history)
+    prompt = f"Please translate the following text into {user_language}: {text_to_translate}"
 
-    translated_text = chat_with_bot('Please translate the following text into Chinese: ' + text_to_translate, 
-                                    chat_history)
+    translated_text = chat_with_bot(prompt, chat_history)
 
     return jsonify({'translation': translated_text})
 
