@@ -58,8 +58,8 @@ def main():
     
     # Example context setting
     set_bot_context(
-        description="You are a chatbot being used in a linguistics class.",
-        instructions="Be patient and provide detailed explanations when needed."
+        description="This app enhances learning by converting MP4 lecture files into transcripts and offering interactive chat features, including summarization, explanation, and translation. It's designed for students, with a focus on introductory linguistics classes. The chatbot utilizes natural language understanding to provide context-sensitive responses.",
+        instructions="Respond to user queries about lecture content. When a transcript section is highlighted for 'summarize', 'explain', or 'translate', deliver accurate, concise, and relevant responses. Adapt to the complexity and context of each query. Clarify unclear or incomplete user requests. The primary content source is Professor Will Styler’s lectures on introductory linguistics."
     )
 
     # while True:
