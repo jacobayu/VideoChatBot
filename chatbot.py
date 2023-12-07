@@ -46,7 +46,7 @@ def chat_with_bot(prompt_text, chat_history_text=None):
                                         {"role": "user", "content": full_prompt}]
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo-1106",  # Replace with your specific GPT-4 model identifier
+        model="gpt-4-1106-preview",  # Replace with your specific GPT-4 model identifier
         messages=messages
     )
     message = response.choices[0].message.content
