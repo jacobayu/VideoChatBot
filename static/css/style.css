@@ -184,8 +184,8 @@ body {
   position: fixed; /* Stay in place */
   bottom: 0;      /* Position at the bottom */
   left: 0;        /* Position to the left */
-  width: 100px;   /* Set a width if necessary */
-  height: 40px;   /* Set a height if necessary */
+  width: 150px;   /* Set a width if necessary */
+  height: 30px;   /* Set a height if necessary */
   padding: 5px;   /* Optional: add some padding */
   font-size: 16px; /* Optional: adjust font size */
   border: 1px solid #ccc; /* Optional: add a border */

@@ -240,9 +240,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                                 : `<div class='text-chatgpt'>ChatGPT: ${message.content}</div>`;*/
 
                                                
+            // const messageDiv = document.createElement('div');
+            // messageDiv.classList.add(message.role === 'user' ? 'text-user' : 'text-chatgpt');
+            // messageDiv.textContent = message.role === 'user' ? `You: ${message.content}` : `ChatGPT: ${message.content}`;
+            // chatbox.appendChild(messageDiv);
             const messageDiv = document.createElement('div');
             messageDiv.classList.add(message.role === 'user' ? 'text-user' : 'text-chatgpt');
-            messageDiv.textContent = message.role === 'user' ? `You: ${message.content}` : `ChatGPT: ${message.content}`;
+
+            // Create a span element for the bold part
+            const boldPart = document.createElement('strong');
+            boldPart.textContent = message.role === 'user' ? 'You: ' : 'ChatGPT: ';
+
+            // Create a text node for the message content
+            const messageContent = document.createTextNode(message.content);
+
+            // Append the bold part and the message content to the messageDiv
+            messageDiv.appendChild(boldPart);
+            messageDiv.appendChild(messageContent);
+
+            // Append the messageDiv to the chatbox
             chatbox.appendChild(messageDiv);
         
         });
@@ -274,7 +290,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
             console.log(chatHistory)
             // Display the user's message in the chatbox
-            chatbox.innerHTML += `<div style="background-color: #D9E8FF; border-radius: 5px; padding: 5px;">You: ${userInput}</div>`;
+            chatbox.innerHTML += `<div style="background-color: #D9E8FF; border-radius: 5px; padding: 5px;"><b>You:</b> ${userInput}</div>`;
             // Clear the input field after sending the message
             inputField.value = '';
             console.log(userInput)

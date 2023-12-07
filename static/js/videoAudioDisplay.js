@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const transcriptContainer = document.getElementById('transcript');
         const transcriptData = data;
         const container = document.getElementById('transcript-container');
-        const MIN_LENGTH = 30; 
+        const MIN_LENGTH = 0; 
 
         videoPlayer.style.display = 'block';
         let currentSpan = null;
