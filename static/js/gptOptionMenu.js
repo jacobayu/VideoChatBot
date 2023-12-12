@@ -59,14 +59,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             let secondNextSpan = firstNextSpan ? firstNextSpan.nextElementSibling : null;
 
             // Concatenate the text from these spans
-            // contextText = (secondPrevSpan ? secondPrevSpan.textContent : '') +
-            //                 (firstPrevSpan ? firstPrevSpan.textContent : '') +
-            //                 selectedText +
-            //                 (firstNextSpan ? firstNextSpan.textContent : '') +
-            //                 (secondNextSpan ? secondNextSpan.textContent : '');
-            contextText =  (firstPrevSpan ? firstPrevSpan.textContent : '') +
+            contextText = (secondPrevSpan ? secondPrevSpan.textContent : '') +
+                            (firstPrevSpan ? firstPrevSpan.textContent : '') +
                             selectedText +
-                            (firstNextSpan ? firstNextSpan.textContent : '') 
+                            (firstNextSpan ? firstNextSpan.textContent : '') +
+                            (secondNextSpan ? secondNextSpan.textContent : '');
+            // contextText =  (firstPrevSpan ? firstPrevSpan.textContent : '') +
+            //                 selectedText +
+            //                 (firstNextSpan ? firstNextSpan.textContent : '') 
 
             console.log(contextText)
             const x = e.clientX;
